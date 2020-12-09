@@ -1,0 +1,19 @@
+name: send_redeploy_request
+
+on:
+  registry_package:
+    types: [published,updated]
+
+
+jobs:
+
+  send_POST_request_to_redeploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: send_POST_request_by_curl
+      env:
+        POST_TOKEN: ${{secrets.POST_TOKEN}}
+      run: |
+        curl -XPOST -dsecret="$POST_TOKEN" -dport=8000 https://deploy.altlab.dev/${{ github.event.repository.name }}
